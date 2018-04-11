@@ -46,10 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Responses\Contact.cs" />
     <Compile Include="Responses\Device.cs" />
     <Compile Include="Responses\DeviceResponse.cs" />
     <Compile Include="Responses\DevicesResponse.cs" />
     <Compile Include="Responses\DevicesResult.cs" />
+    <Compile Include="Responses\Message.cs" />
+    <Compile Include="Responses\MessageResponse.cs" />
+    <Compile Include="Responses\MessagesResponse.cs" />
+    <Compile Include="Responses\MessagesResult.cs" />
+    <Compile Include="Responses\Response.cs" />
+    <Compile Include="Responses\Result.cs" />
+    <Compile Include="Responses\SingleResult.cs" />
     <Compile Include="SmsGatewayApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils.cs" />

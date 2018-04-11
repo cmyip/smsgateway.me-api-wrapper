@@ -29,6 +29,18 @@ namespace SmsGateway.MeApiWrapper {
     public async Task<DeviceResponse> GetDevice(string id) {
       return await Get<DeviceResponse>($"devices/view/{id}", DefaultQueryParams());
     }
+
+    public async Task<MessagesResponse> GetMessages(int page = 1) {
+      var queryParams = DefaultQueryParams();
+      if (page > 1) {
+        queryParams.Add("page", page.ToString());
+      }
+      return await Get<MessagesResponse>("messages", queryParams);;
+    }
+    
+    public async Task<MessageResponse> GetMessage(string id) {
+      return await Get<MessageResponse>($"messages/view/{id}", DefaultQueryParams());
+    }
     
     private async Task<T> Get<T>(string path, NameValueCollection queryParams) where T : class {
       T result = null;
