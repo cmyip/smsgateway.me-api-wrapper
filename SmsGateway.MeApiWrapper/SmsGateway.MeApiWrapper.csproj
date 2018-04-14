@@ -57,6 +57,10 @@
     <Compile Include="Responses\MessagesResult.cs" />
     <Compile Include="Responses\Response.cs" />
     <Compile Include="Responses\Result.cs" />
+    <Compile Include="Responses\SendMessageResponse.cs" />
+    <Compile Include="Responses\SendMessageResult.cs" />
+    <Compile Include="Responses\SendMessageResultFail.cs" />
+    <Compile Include="Responses\SendMessageResults.cs" />
     <Compile Include="Responses\SingleResult.cs" />
     <Compile Include="SmsGatewayApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PostTypes" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

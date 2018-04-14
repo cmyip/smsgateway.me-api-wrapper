@@ -41,6 +41,30 @@ namespace SmsGateway.MeApiWrapper {
     public async Task<MessageResponse> GetMessage(string id) {
       return await Get<MessageResponse>($"messages/view/{id}", DefaultQueryParams());
     }
+
+    public Task<SendMessageResponse> SendMessage(string deviceId, string number, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
+      return SendMessage(deviceId, new[] {number}, message, sendAt, expiresAt);
+    }
+
+    public async Task<SendMessageResponse> SendMessage(string deviceId, string[] numbers, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
+      var queryParams = DefaultQueryParams();
+      queryParams.Add("device", deviceId);
+      for (var i = 0; i < numbers.Length; i++) {
+        queryParams.Add($"number[{i}]", numbers[i]);
+      }
+      queryParams.Add("message", message);
+      
+      if (sendAt != null) {
+        var sentAtUnixTime = ((DateTimeOffset) sendAt).ToUnixTimeSeconds();
+        queryParams.Add("send_at", sentAtUnixTime.ToString());
+      }
+      if (expiresAt != null) {
+        var expiresAtUnixTime = ((DateTimeOffset) expiresAt).ToUnixTimeSeconds();
+        queryParams.Add("expires_at", expiresAtUnixTime.ToString());
+      }
+      
+      return await Post<SendMessageResponse>("messages/send", queryParams);
+    }
     
     private async Task<T> Get<T>(string path, NameValueCollection queryParams) where T : class {
       T result = null;
@@ -49,6 +73,19 @@ namespace SmsGateway.MeApiWrapper {
         result = await response.Content.ReadAsAsync<T>();
       }
       return result;
+    }
+
+    private async Task<T> Post<T>(string path, NameValueCollection queryParams) where T : class {
+      T result = null;
+      var response = await httpClient.PostAsync(CreateUri(path), new StringContent(queryParams.AsHttpParams()));
+      if (response.IsSuccessStatusCode) {
+        result = await response.Content.ReadAsAsync<T>();
+      }
+      return result;
+    }
+
+    private static Uri CreateUri(string path) {
+      return new Uri(URL_BASE + path);
     }
 
     private static Uri CreateUri(string path, NameValueCollection queryParams) {
