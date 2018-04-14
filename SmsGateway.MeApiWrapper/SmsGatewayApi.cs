@@ -41,6 +41,55 @@ namespace SmsGateway.MeApiWrapper {
     public async Task<MessageResponse> GetMessage(string id) {
       return await Get<MessageResponse>($"messages/view/{id}", DefaultQueryParams());
     }
+    
+    public async Task<SendMessageResponse> SendMessages(MesssageData[] data) {
+      var queryParams = DefaultQueryParams();
+      for (var i = 0; i < data.Length; i++) {
+        queryParams.Add($"data[{i}][device]", data[i].DeviceId);
+        queryParams.Add($"data[{i}][message]", data[i].Message);
+
+        if (data[i].Number != null) {
+          queryParams.Add($"data[{i}][number]", data[i].Number);
+        } else if (data[i].ContactId != null) {
+          queryParams.Add($"data[{i}][contact]", data[i].ContactId);
+        }
+      
+        if (data[i].SendAt != null) {
+          var sentAtUnixTime = ((DateTimeOffset) data[i].SendAt).ToUnixTimeSeconds();
+          queryParams.Add($"data[{i}][send_at]", sentAtUnixTime.ToString());
+        }
+        if (data[i].ExpiressAt != null) {
+          var expiresAtUnixTime = ((DateTimeOffset) data[i].ExpiressAt).ToUnixTimeSeconds();
+          queryParams.Add($"data[{i}][expires_at]", expiresAtUnixTime.ToString());
+        }
+      }
+      
+      return await Post<SendMessageResponse>("messages/send", queryParams);
+    }
+
+    public Task<SendMessageResponse> SendMessageToContact(string deviceId, string contactId, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
+      return SendMessageToContact(deviceId, new[] {contactId}, message, sendAt, expiresAt);
+    }
+
+    public async Task<SendMessageResponse> SendMessageToContact(string deviceId, string[] contactIds, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
+      var queryParams = DefaultQueryParams();
+      queryParams.Add("device", deviceId);
+      for (var i = 0; i < contactIds.Length; i++) {
+        queryParams.Add($"contact[{i}]", contactIds[i]);
+      }
+      queryParams.Add("message", message);
+      
+      if (sendAt != null) {
+        var sentAtUnixTime = ((DateTimeOffset) sendAt).ToUnixTimeSeconds();
+        queryParams.Add("send_at", sentAtUnixTime.ToString());
+      }
+      if (expiresAt != null) {
+        var expiresAtUnixTime = ((DateTimeOffset) expiresAt).ToUnixTimeSeconds();
+        queryParams.Add("expires_at", expiresAtUnixTime.ToString());
+      }
+      
+      return await Post<SendMessageResponse>("messages/send", queryParams);
+    }
 
     public Task<SendMessageResponse> SendMessage(string deviceId, string number, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
       return SendMessage(deviceId, new[] {number}, message, sendAt, expiresAt);
