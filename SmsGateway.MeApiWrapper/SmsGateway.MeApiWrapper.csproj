@@ -48,10 +48,14 @@
   <ItemGroup>
     <Compile Include="MesssageData.cs" />
     <Compile Include="Responses\Contact.cs" />
+    <Compile Include="Responses\ContactDetails.cs" />
+    <Compile Include="Responses\ContactResponse.cs" />
+    <Compile Include="Responses\CreateContactResponse.cs" />
     <Compile Include="Responses\Device.cs" />
     <Compile Include="Responses\DeviceResponse.cs" />
     <Compile Include="Responses\DevicesResponse.cs" />
     <Compile Include="Responses\DevicesResult.cs" />
+    <Compile Include="Responses\ListContactsResponse.cs" />
     <Compile Include="Responses\Message.cs" />
     <Compile Include="Responses\MessageResponse.cs" />
     <Compile Include="Responses\MessagesResponse.cs" />

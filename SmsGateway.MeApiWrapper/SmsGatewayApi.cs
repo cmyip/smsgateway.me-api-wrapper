@@ -114,6 +114,27 @@ namespace SmsGateway.MeApiWrapper {
       
       return await Post<SendMessageResponse>("messages/send", queryParams);
     }
+
+    public async Task<CreateContactResponse> CreateContact(string name, string number) {
+      var queryParams = new NameValueCollection() {
+        {"name", name},
+        {"number", number}
+      };
+      return await Post<CreateContactResponse>("contacts/create", queryParams);
+    }
+
+    public async Task<ListContactsResponse> ListContacts(int page = 1) {
+      var queryParams = DefaultQueryParams();
+      if (page > 1) {
+        queryParams.Add("page", page.ToString());
+      }
+
+      return await Get<ListContactsResponse>("contacts", queryParams);
+    }
+    
+    public async Task<ContactResponse> GetContact(string id) {
+      return await Get<ContactResponse>($"contacts/view/{id}", DefaultQueryParams());
+    }
     
     private async Task<T> Get<T>(string path, NameValueCollection queryParams) where T : class {
       T result = null;
