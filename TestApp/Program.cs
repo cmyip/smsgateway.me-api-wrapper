@@ -18,7 +18,15 @@ namespace TestApp {
         }
 
         var myDevice = await smsGateway.GetDevice(devices.result.data[0].id);
-        Console.WriteLine(myDevice.result.name);
+        var result = await smsGateway.SendMessage(myDevice.result.id, args[2], "hello, sent from code...");
+        if (result.success) {
+          foreach (var fail in result.result.fails) {
+            Console.WriteLine("fail {0}", fail.device);
+          }
+          foreach (var success in result.result.success) {
+            Console.WriteLine("success {0}", success.status);
+          }
+        }
       }).GetAwaiter().GetResult();
     }
   }

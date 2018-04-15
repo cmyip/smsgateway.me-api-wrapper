@@ -72,7 +72,7 @@ namespace SmsGateway.MeApiWrapper {
     }
 
     public async Task<SendMessageResponse> SendMessageToContact(string deviceId, string[] contactIds, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
-      var queryParams = DefaultQueryParams();
+      var queryParams = new NameValueCollection();
       queryParams.Add("device", deviceId);
       for (var i = 0; i < contactIds.Length; i++) {
         queryParams.Add($"contact[{i}]", contactIds[i]);
@@ -96,7 +96,7 @@ namespace SmsGateway.MeApiWrapper {
     }
 
     public async Task<SendMessageResponse> SendMessage(string deviceId, string[] numbers, string message, DateTime? sendAt = null, DateTime? expiresAt = null) {
-      var queryParams = DefaultQueryParams();
+      var queryParams = new NameValueCollection();
       queryParams.Add("device", deviceId);
       for (var i = 0; i < numbers.Length; i++) {
         queryParams.Add($"number[{i}]", numbers[i]);
@@ -126,7 +126,7 @@ namespace SmsGateway.MeApiWrapper {
 
     private async Task<T> Post<T>(string path, NameValueCollection queryParams) where T : class {
       T result = null;
-      var response = await httpClient.PostAsync(CreateUri(path), new StringContent(queryParams.AsHttpParams()));
+      var response = await httpClient.PostAsync(CreateUri(path, DefaultQueryParams()), queryParams.AsUrlEncoded());
       if (response.IsSuccessStatusCode) {
         result = await response.Content.ReadAsAsync<T>();
       }

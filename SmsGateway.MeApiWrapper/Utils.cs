@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Web;
 
@@ -20,6 +23,20 @@ namespace SmsGateway.MeApiWrapper {
         str = "&";
       }
       return stringBuilder.ToString();
+    }
+    
+    public static IEnumerable<KeyValuePair<string, string>> ToPairs(this NameValueCollection collection) {
+      if(collection == null) {
+        throw new ArgumentNullException(nameof(collection));
+      }
+      return collection.Cast<string>().Select(key => new KeyValuePair<string, string>(key, collection[key]));
+    }
+
+    public static FormUrlEncodedContent AsUrlEncoded(this NameValueCollection collection) {
+      if(collection == null) {
+        throw new ArgumentNullException(nameof(collection));
+      }
+      return new FormUrlEncodedContent(collection.ToPairs());
     }
   }
 }
