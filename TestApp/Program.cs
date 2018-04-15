@@ -6,25 +6,34 @@ namespace TestApp {
   internal class Program {
     public static void Main(string[] args) {
       var smsGateway = new SmsGatewayApi(args[0], args[1]);
-      Console.WriteLine("started");
       Task.Run(async () => {
-        Console.WriteLine("get devices");
-        var devices = await smsGateway.GetDevices();
-        Console.WriteLine("got devices");
-        Console.WriteLine(devices.success);
-        Console.WriteLine(devices.result.current_page);
-        foreach (var device in devices.result.data) {
-          Console.WriteLine("device id: {0}", device.id);
-        }
-
-        var myDevice = await smsGateway.GetDevice(devices.result.data[0].id);
-        var result = await smsGateway.SendMessage(myDevice.result.id, args[2], "hello, sent from code...");
-        if (result.success) {
-          foreach (var fail in result.result.fails) {
-            Console.WriteLine("fail {0}", fail.device);
+        while (true) {
+          Console.WriteLine("type a command");
+          var readLine = Console.ReadLine();
+          if (readLine == null || readLine == "exit") {
+            break;
           }
-          foreach (var success in result.result.success) {
-            Console.WriteLine("success {0}", success.status);
+          var strings = readLine.Split(' ');
+          switch (strings[0]) {
+            case "getDevices":
+              Console.WriteLine("get devices");
+              if (strings.Length == 2) {
+                var result = await smsGateway.GetDevices(Convert.ToInt32(strings[1]));
+                Console.WriteLine(result.PrettyPrint());
+              } else {
+                var result = await smsGateway.GetDevices();
+                Console.WriteLine(result.PrettyPrint());
+              }
+              break;
+            case "getDevice":
+              if (strings.Length != 2) {
+                Console.WriteLine("expected device id");
+              } else {
+                Console.WriteLine("get device {0}", strings[1]);
+                var result = await smsGateway.GetDevice(strings[1]);
+                Console.WriteLine(result.PrettyPrint());
+              }
+              break;
           }
         }
       }).GetAwaiter().GetResult();
