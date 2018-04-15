@@ -34,6 +34,25 @@ namespace TestApp {
                 Console.WriteLine(result.PrettyPrint());
               }
               break;
+            case "getMessages":
+              Console.WriteLine("get messages");
+              if (strings.Length == 2) {
+                var result = await smsGateway.GetMessages(Convert.ToInt32(strings[1]));
+                Console.WriteLine(result.PrettyPrint());
+              } else {
+                var result = await smsGateway.GetMessages();
+                Console.WriteLine(result.PrettyPrint());
+              }
+              break;
+            case "getMessage":
+              if (strings.Length != 2) {
+                Console.WriteLine("expected message id");
+              } else {
+                Console.WriteLine("get message {0}", strings[1]);
+                var result = await smsGateway.GetMessage(strings[1]);
+                Console.WriteLine(result.PrettyPrint());
+              }
+              break;
           }
         }
       }).GetAwaiter().GetResult();

@@ -59,7 +59,6 @@
     <Compile Include="Responses\Message.cs" />
     <Compile Include="Responses\MessageResponse.cs" />
     <Compile Include="Responses\MessagesResponse.cs" />
-    <Compile Include="Responses\MessagesResult.cs" />
     <Compile Include="Responses\Response.cs" />
     <Compile Include="Responses\Result.cs" />
     <Compile Include="Responses\SendMessageResponse.cs" />
