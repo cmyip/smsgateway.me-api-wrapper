@@ -39,7 +39,9 @@ Below what is already implemented and what's not:
 ## Messages
  - :heavy_check_mark: Sending a message
  - :heavy_check_mark: Searching for messages
-
+ - :x: Canceling a message
+ - :x: Getting a message information
+ 
 ## Contacts
  - :x: Creating a contact
  - :x: Updating an existing contact
@@ -47,10 +49,6 @@ Below what is already implemented and what's not:
  - :x: Remove a phone from an existing contact
  - :x: Getting a contact information
  - :x: Searching for contacts
-
-## Messages
- - :heavy_check_mark: Canceling a message
- - :heavy_check_mark: Getting a message information
 
 ## Callbacks
  - :x: Creating a callback
