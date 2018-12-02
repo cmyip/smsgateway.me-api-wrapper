@@ -2,9 +2,8 @@
 Recently the implementation of the smsgateway.me for sending/receiving SMS's has changed
 and broke the library that I was using, so I decided to make my own version
 
-# Usage
-## Installation
-TODO
+Fork of https://github.com/beejjacobs/smsgateway.me-api-wrapper
+
 
 ## Token
 Get your API Token in the [settings page](https://smsgateway.me/dashboard/settings)
